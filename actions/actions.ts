@@ -4,14 +4,16 @@ import prisma from "@/app/lib/db";
 import { revalidatePath } from "next/cache";
 
 export async function createUser(formData: FormData) {
-  const name = formData.get("name") as string;
+  const first_name = formData.get("first_name") as string;
+  const last_name = formData.get("last_name") as string;
   const email = formData.get("email") as string;
 
-  if (!name || !email) return;
+  if (!first_name || !last_name || !email) return;
 
-  await prisma.users.create({
+  await prisma.user.create({
     data: {
-      name,
+      first_name,
+      last_name,
       email,
     },
   });

@@ -5,7 +5,7 @@ import createUser from "@/actions/actions";
 // Server Action (Next.js 13+)
 
 export default async function SimpleTable() {
-  const users = await prisma.users.findMany();
+  const users = await prisma.user.findMany();
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
@@ -19,8 +19,14 @@ export default async function SimpleTable() {
         >
           <input
             type="text"
-            name="name"
-            placeholder="Name"
+            name="first_name"
+            placeholder="First Name"
+            className="p-3 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-gray-300"
+          />
+          <input
+            type="text"
+            name="last_name"
+            placeholder="Last Name"
             className="p-3 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-gray-300"
           />
 
@@ -48,16 +54,19 @@ export default async function SimpleTable() {
             </thead>
 
             <tbody>
-              {users.map((row) => (
-                <tr
-                  key={row.id}
-                  className="border-t hover:bg-gray-50 transition"
-                >
-                  <td className="p-4 text-sm">{row.id}</td>
-                  <td className="p-4 text-sm">{row.name}</td>
-                  <td className="p-4 text-sm">{row.email}</td>
-                </tr>
-              ))}
+              {users &&
+                users.map((row) => (
+                  <tr
+                    key={row.id}
+                    className="border-t hover:bg-gray-50 transition"
+                  >
+                    <td className="p-4 text-sm">{row.id}</td>
+                    <td className="p-4 text-sm">
+                      {row.first_name} {row.last_name}
+                    </td>
+                    <td className="p-4 text-sm">{row.email}</td>
+                  </tr>
+                ))}
             </tbody>
           </table>
         </div>
