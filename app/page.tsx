@@ -7,6 +7,7 @@ import createUser from "@/actions/actions";
 export default async function SimpleTable() {
   const users = await prisma.user.findMany();
   const listings = await prisma.listing.findMany();
+  const bookings = await prisma.booking.findMany();
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
@@ -102,6 +103,45 @@ export default async function SimpleTable() {
                     <td className="p-4 text-sm">{row.description}</td>
                     <td className="p-4 text-sm">${row.price.toFixed(2)}</td>
                     <td className="p-4 text-sm">{row.userId}</td>
+                  </tr>
+                ))}
+            </tbody>
+          </table>
+        </div>
+        {/* Bookings Table */}
+        <h1 className="text-2xl font-semibold">Bookings Table</h1>
+        <div className="bg-white shadow-md rounded-2xl overflow-hidden">
+          <table className="w-full text-left border-collapse">
+            <thead className="bg-gray-100">
+              <tr>
+                <th className="p-4 text-sm font-medium text-gray-600">ID</th>
+                <th className="p-4 text-sm font-medium text-gray-600">
+                  listingID
+                </th>
+                <th className="p-4 text-sm font-medium text-gray-600">
+                  UserID
+                </th>
+                <th className="p-4 text-sm font-medium text-gray-600">Start</th>
+                <th className="p-4 text-sm font-medium text-gray-600">End</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {bookings &&
+                bookings.map((row) => (
+                  <tr
+                    key={row.id}
+                    className="border-t hover:bg-gray-50 transition"
+                  >
+                    <td className="p-4 text-sm">{row.id}</td>
+                    <td className="p-4 text-sm">{row.listingId}</td>
+                    <td className="p-4 text-sm">{row.userId}</td>
+                    <td className="p-4 text-sm">
+                      {new Date(row.startDate).toLocaleDateString()}
+                    </td>
+                    <td className="p-4 text-sm">
+                      {new Date(row.endDate).toLocaleDateString()}
+                    </td>
                   </tr>
                 ))}
             </tbody>
