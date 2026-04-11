@@ -6,11 +6,12 @@ import createUser from "@/actions/actions";
 
 export default async function SimpleTable() {
   const users = await prisma.user.findMany();
+  const listings = await prisma.listing.findMany();
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-5xl mx-auto space-y-6">
-        <h1 className="text-2xl font-semibold">Simple Table</h1>
+        <h1 className="text-2xl font-semibold">Database Table</h1>
 
         {/* Form */}
         <form
@@ -42,7 +43,8 @@ export default async function SimpleTable() {
           </button>
         </form>
 
-        {/* Table */}
+        {/* Users Table */}
+        <h1 className="text-2xl font-semibold">Users Table</h1>
         <div className="bg-white shadow-md rounded-2xl overflow-hidden">
           <table className="w-full text-left border-collapse">
             <thead className="bg-gray-100">
@@ -65,6 +67,41 @@ export default async function SimpleTable() {
                       {row.first_name} {row.last_name}
                     </td>
                     <td className="p-4 text-sm">{row.email}</td>
+                  </tr>
+                ))}
+            </tbody>
+          </table>
+        </div>
+        {/* Listings Table */}
+        <h1 className="text-2xl font-semibold">Listings Table</h1>
+        <div className="bg-white shadow-md rounded-2xl overflow-hidden">
+          <table className="w-full text-left border-collapse">
+            <thead className="bg-gray-100">
+              <tr>
+                <th className="p-4 text-sm font-medium text-gray-600">ID</th>
+                <th className="p-4 text-sm font-medium text-gray-600">Title</th>
+                <th className="p-4 text-sm font-medium text-gray-600">
+                  Description
+                </th>
+                <th className="p-4 text-sm font-medium text-gray-600">Price</th>
+                <th className="p-4 text-sm font-medium text-gray-600">
+                  userID
+                </th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {listings &&
+                listings.map((row) => (
+                  <tr
+                    key={row.id}
+                    className="border-t hover:bg-gray-50 transition"
+                  >
+                    <td className="p-4 text-sm">{row.id}</td>
+                    <td className="p-4 text-sm">{row.title}</td>
+                    <td className="p-4 text-sm">{row.description}</td>
+                    <td className="p-4 text-sm">${row.price.toFixed(2)}</td>
+                    <td className="p-4 text-sm">{row.userId}</td>
                   </tr>
                 ))}
             </tbody>
