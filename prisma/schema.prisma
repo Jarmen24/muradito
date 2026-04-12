@@ -16,6 +16,7 @@ enum ListingType {
   SALE
 }
 
+
 model User {
   id         String   @id @default(uuid())
   email      String   @unique
@@ -26,22 +27,43 @@ model User {
 
   listings  Listing[]
   bookings  Booking[]
+  ratings   Rating[]
 }
 
 model Listing {
   id          String   @id @default(uuid())
-  title       String
-  description String
-  price       Decimal
-  type        ListingType
+  name       String
+  url        String   @unique
+  property_type String
+  description String?
+  price       Decimal @db.Decimal(10, 2)
+  price_currency String
+  listing_type        ListingType
   images     String[]
+  country    String
+  city       String
+  area      String
+  latitude   Float
+  longitude  Float
   userId     String
   createdAt   DateTime @default(now())
 
   user       User    @relation(fields: [userId], references: [id])
+  ratings     Rating[]
   bookings    Booking[]
 }
 
+model Rating {
+  id        String   @id @default(uuid())
+  listingId String
+  userId    String
+  rating    Int
+  comment   String?
+  createdAt DateTime @default(now())
+
+  listing   Listing  @relation(fields: [listingId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+}
 model Booking {
   id        String   @id @default(uuid())
   listingId String
