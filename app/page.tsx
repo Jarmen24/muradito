@@ -99,7 +99,7 @@ export default async function SimpleTable() {
                     className="border-t hover:bg-gray-50 transition"
                   >
                     <td className="p-4 text-sm">{row.id}</td>
-                    <td className="p-4 text-sm">{row.title}</td>
+                    <td className="p-4 text-sm">{row.name}</td>
                     <td className="p-4 text-sm">{row.description}</td>
                     <td className="p-4 text-sm">${row.price.toFixed(2)}</td>
                     <td className="p-4 text-sm">{row.userId}</td>
