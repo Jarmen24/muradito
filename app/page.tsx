@@ -80,7 +80,7 @@ export default async function SimpleTable() {
             <thead className="bg-gray-100">
               <tr>
                 <th className="p-4 text-sm font-medium text-gray-600">ID</th>
-                <th className="p-4 text-sm font-medium text-gray-600">Title</th>
+                <th className="p-4 text-sm font-medium text-gray-600">Name</th>
                 <th className="p-4 text-sm font-medium text-gray-600">
                   Description
                 </th>
