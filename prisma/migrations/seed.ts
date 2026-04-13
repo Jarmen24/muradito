@@ -40,7 +40,7 @@ async function main() {
         data: {
           name: item.name,
           url: item.url,
-          description: `Stay at ${item.name} located in ${item.city}`,
+          description: `Stay at ${item.name} located in ${item.address.city}`,
           price: item.pricePerBook || 0,
           price_currency: item.priceCurrency || "USD",
           listing_type: ListingType.RENT,
