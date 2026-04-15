@@ -5,7 +5,7 @@ import { Button } from "../ui/button";
 
 const Header = () => {
   return (
-    <header className="flex items-center w-full px-6 py-2 border-4 border-red-600 bg-white">
+    <header className="flex items-center w-full px-6 py-2 bg-white">
       {/* 1. Logo stays on the left */}
       <div className="shrink-0">
         <Image src="/bookit.png" width={80} height={20} alt="logo" />
