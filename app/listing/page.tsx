@@ -11,7 +11,15 @@ const AllListing = async () => {
   const listings: Listing[] = await getFirstFive();
   if (!listings.length) return <div>No listings found</div>;
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <div className="flex flex-col min-h-screen bg-gray-50 gap-6">
+      <div className="w-full h-[250px] relative">
+        <Image
+          src="/hero2.jpg"
+          alt="Hero Image"
+          fill
+          className="object-cover object-center rounded-b-xl"
+        />
+      </div>
       <div className="max-w-5xl mx-auto space-y-6">
         <GridContainer>
           {listings.map((listing) => (
