@@ -28,7 +28,7 @@ const AllListing = async () => {
                 key={listing.id}
                 src={listing.images[0]}
                 title={listing.name}
-                price={`₱${listing.price}`}
+                price={`$${listing.price}`}
               />
             </Link>
           ))}
