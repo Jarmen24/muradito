@@ -13,42 +13,88 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import "@/app/globals.css";
-import { login } from "@/app/lib/auth-client";
+import { register } from "@/app/actions/register";
+import { Field, FieldGroup } from "@/components/ui/field";
 import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
 
 export default function Login() {
   const router = useRouter();
-  async function handleLogin(e: React.SubmitEvent<HTMLFormElement>) {
+
+  async function handleSignup(e: React.SubmitEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    const form = e.currentTarget;
-    const email = (form.email as HTMLInputElement).value;
-    const password = (form.password as HTMLInputElement).value;
+    const formData = new FormData(e.currentTarget);
 
-    const res = await login(email, password);
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
 
-    if (res?.error) {
-      alert("Invalid Credentials");
+    // 1. Register user (server action)
+    try {
+      await register(formData);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        alert(err.message);
+      } else {
+        alert("Something went wrong");
+      }
       return;
     }
 
+    // 2. Login (client-side NextAuth)
+    const res = await signIn("credentials", {
+      email,
+      password,
+      redirect: false,
+    });
+
+    if (res?.error) {
+      alert("Login failed");
+      return;
+    }
+
+    // 3. Redirect
     router.push("/listing");
   }
+
   return (
-    <form onSubmit={handleLogin}>
+    <form onSubmit={handleSignup}>
       <div className="min-h-screen flex items-center justify-center px-4">
         <Card className="w-full max-w-sm mx-auto">
           <CardHeader>
-            <CardTitle>Login to your account</CardTitle>
+            <CardTitle>Sign Up</CardTitle>
             <CardDescription>
-              Enter your email below to login to your account
+              Enter your details so we can sing you up!
             </CardDescription>
             <CardAction>
-              <Button variant="link">Sign Up</Button>
+              <Button variant="link">Log in</Button>
             </CardAction>
           </CardHeader>
           <CardContent>
             <div className="flex flex-col gap-6">
+              <div className="grid gap-2">
+                <Label htmlFor="email">Name</Label>
+                <FieldGroup className="grid grid-cols-2 gap-1">
+                  <Field>
+                    <Input
+                      id="first_name"
+                      type="first_name"
+                      name="first_name"
+                      placeholder="First Name"
+                      required
+                    />
+                  </Field>
+                  <Field>
+                    <Input
+                      id="last_name"
+                      type="last_name"
+                      name="last_name"
+                      placeholder="Last Name (optional)"
+                      required
+                    />
+                  </Field>
+                </FieldGroup>
+              </div>
               <div className="grid gap-2">
                 <Label htmlFor="email">Email</Label>
                 <Input
@@ -75,10 +121,10 @@ export default function Login() {
           </CardContent>
           <CardFooter className="flex-col gap-2">
             <Button type="submit" className="w-full">
-              Login
+              Sign up
             </Button>
             <Button variant="outline" className="w-full">
-              Login with Google
+              Continue with Google
             </Button>
           </CardFooter>
         </Card>
