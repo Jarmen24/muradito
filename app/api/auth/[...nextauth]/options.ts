@@ -1,4 +1,5 @@
 import type { NextAuthOptions } from "next-auth";
+import bcrypt from "bcrypt";
 import CredentialsProvider from "next-auth/providers/credentials";
 import prisma from "@/app/lib/db";
 
@@ -25,10 +26,12 @@ export const options: NextAuthOptions = {
           where: { email: credentials.email },
         });
 
-        if (!user) throw new Error("No user found");
+        if (!user || !user.password) throw new Error("No user found");
 
-        const isValid = credentials.password === user.password ? true : false;
-
+        const isValid = await bcrypt.compare(
+          credentials.password,
+          user.password,
+        );
         if (!isValid) throw new Error("Invalid password");
 
         return {
