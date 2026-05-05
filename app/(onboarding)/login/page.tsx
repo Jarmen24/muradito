@@ -15,8 +15,13 @@ import { Label } from "@/components/ui/label";
 import "@/app/globals.css";
 import { login } from "@/app/lib/auth-client";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { AlertDestructive } from "@/components/Layout/AlertDestructive";
+import Link from "next/link";
 
 export default function Login() {
+  const [invalidLogin, setInvalidLogin] = useState(false);
+
   const router = useRouter();
   async function handleLogin(e: React.SubmitEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -27,8 +32,8 @@ export default function Login() {
 
     const res = await login(email, password);
 
-    if (res?.error) {
-      alert("Invalid Credentials");
+    if (res.error) {
+      setInvalidLogin(true);
       return;
     }
 
@@ -44,7 +49,9 @@ export default function Login() {
               Enter your email below to login to your account
             </CardDescription>
             <CardAction>
-              <Button variant="link">Sign Up</Button>
+              <Button variant="link" asChild>
+                <Link href="/signup">Sign Up</Link>
+              </Button>
             </CardAction>
           </CardHeader>
           <CardContent>
@@ -71,6 +78,12 @@ export default function Login() {
                 </div>
                 <Input id="password" type="password" name="password" required />
               </div>
+              {invalidLogin && (
+                <AlertDestructive
+                  title="Invalid Credentials"
+                  description="Please try again and check your email or password"
+                />
+              )}
             </div>
           </CardContent>
           <CardFooter className="flex-col gap-2">
