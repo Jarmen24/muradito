@@ -2,6 +2,7 @@ import type { NextAuthOptions } from "next-auth";
 import bcrypt from "bcrypt";
 import CredentialsProvider from "next-auth/providers/credentials";
 import prisma from "@/app/lib/db";
+import { isNull } from "util";
 
 export const options: NextAuthOptions = {
   providers: [
@@ -26,13 +27,13 @@ export const options: NextAuthOptions = {
           where: { email: credentials.email },
         });
 
-        if (!user || !user.password) throw new Error("No user found");
+        if (!user || !user.password) return null;
 
         const isValid = await bcrypt.compare(
           credentials.password,
           user.password,
         );
-        if (!isValid) throw new Error("Invalid password");
+        if (!isValid) return null;
 
         return {
           id: user.id,
