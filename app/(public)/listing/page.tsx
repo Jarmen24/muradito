@@ -11,13 +11,13 @@ const AllListing = async () => {
   const listings: Listing[] = await getFirstFive();
   if (!listings.length) return <div>No listings found</div>;
   return (
-    <div className="flex flex-col min-h-screen bg-gray-50 gap-6">
-      <div className="w-full h-[250px] relative">
+    <div className="flex flex-col min-h-screen  gap-6">
+      <div className="w-full h-140 relative">
         <Image
-          src="/hero2.jpg"
-          alt="Hero Image"
+          src="/bg-listing.jpg"
+          className="object-cover w-full rounded-xl object-[center_40%]"
           fill
-          className="object-cover object-center rounded-b-xl"
+          alt="background"
         />
       </div>
       <div className="max-w-5xl mx-auto space-y-6">
