@@ -37,7 +37,7 @@ export default function RootLayout({
         figtree.variable,
       )}
     >
-      <body className="h-full w-full">{children}</body>
+      <body className="h-full w-full p-3">{children}</body>
     </html>
   );
 }
