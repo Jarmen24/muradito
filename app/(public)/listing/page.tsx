@@ -1,18 +1,14 @@
-import Card from "@/components/Listing/Card";
-import GridContainer from "@/components/Listing/GridContainer";
-import { StarIcon } from "lucide-react";
 import Image from "next/image";
-import React from "react";
 import { Listing } from "@prisma/client";
-import { getFirstFive } from "@/app/lib/listing";
-import Link from "next/link";
-import { DropdownMenu } from "radix-ui";
-import { DropdownMenuGroup } from "@/components/ui/dropdown-menu";
+import { getFirstTen } from "@/app/lib/listing";
 import { Label } from "@/components/ui/label";
 import { DropdownMenuWhere } from "@/components/Layout/DropdownWhere";
+import ListingCarousel from "@/components/Listing/ListingCarousel";
 
 const AllListing = async () => {
-  const listings: Listing[] = await getFirstFive();
+  const listingsRaw: Listing[] = await getFirstTen();
+
+  const listings = JSON.parse(JSON.stringify(listingsRaw));
   if (!listings.length) return <div>No listings found</div>;
   return (
     <div className="flex flex-col min-h-screen  gap-6">
@@ -54,18 +50,8 @@ const AllListing = async () => {
         </div>
       </div>
       <div className="max-w-5xl mx-auto space-y-6">
-        <GridContainer>
-          {listings.map((listing) => (
-            <Link key={listing.id} href={`/listings/${listing.id}`}>
-              <Card
-                key={listing.id}
-                src={listing.images[0]}
-                title={listing.name}
-                price={`$${listing.price}`}
-              />
-            </Link>
-          ))}
-        </GridContainer>
+        <h2 className="text-lg font-semibold">Popular Rentals</h2>
+        <ListingCarousel listings={listings} />
       </div>
     </div>
   );
