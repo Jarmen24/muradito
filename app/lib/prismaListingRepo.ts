@@ -10,4 +10,9 @@ export const prismaListingRepo: ListingRepo = {
       take: 5,
     });
   },
+  getFirstTen: async () => {
+    return await prisma.listing.findMany({
+      take: 10,
+    });
+  },
 };

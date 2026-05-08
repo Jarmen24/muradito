@@ -4,3 +4,4 @@ const repo = prismaListingRepo;
 
 export const getAllListings = repo.getAllListings;
 export const getFirstFive = repo.getFirstFive;
+export const getFirstTen = repo.getFirstTen;
