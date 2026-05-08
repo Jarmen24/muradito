@@ -12,7 +12,7 @@ const Card = ({
   price: string;
 }) => {
   return (
-    <div className="h-full rounded-2xl border border-gray-200 bg-white">
+    <div className="h-full rounded-2xl border border-gray-200 bg-white w-full">
       <div className="w-full relative h-32">
         <Image
           src={src}
