@@ -30,9 +30,9 @@ export function DropdownMenuWhere() {
             viewBox="0 0 24 24"
             fill="none"
             stroke="#c7c7c7"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
             className="lucide lucide-arrow-down-up-icon lucide-arrow-down-up"
           >
             <path d="m3 16 4 4 4-4" />
