@@ -14,11 +14,11 @@ const Header = async () => {
   const session = await getServerSession(options);
   console.log(session);
   return (
-    <header className="flex items-center w-full px-6 py-2 absolute z-10">
+    <header className="flex items-center w-full px-6 py-2 absolute z-30">
       {/* 1. Logo stays on the left */}
-      <div className="shrink-0">
+      <Link href="/" className="shrink-0">
         <Image src="/bookit-white.png" width={90} height={40} alt="logo" />
-      </div>
+      </Link>
 
       {/* 2. Links - "mx-auto" pushes everything else away to center these */}
       <nav className="flex items-center mx-auto  rounded-xl bg-white">
