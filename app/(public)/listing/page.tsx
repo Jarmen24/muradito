@@ -1,12 +1,13 @@
 import Image from "next/image";
 import { Listing } from "@prisma/client";
-import { getFirstTen } from "@/app/lib/listing";
+import { getFirstTenListing } from "@/app/lib/listing";
 import { Label } from "@/components/ui/label";
-import { DropdownMenuWhere } from "@/components/Layout/DropdownWhere";
+import { DropdownMenuWhere } from "@/components/Listing/SearchComponent/DropdownWhere";
 import ListingCarousel from "@/components/Listing/ListingCarousel";
+import Search from "@/components/Listing/SearchComponent/Search";
 
 const AllListing = async () => {
-  const listingsRaw: Listing[] = await getFirstTen();
+  const listingsRaw: Listing[] = await getFirstTenListing();
 
   const listings = JSON.parse(JSON.stringify(listingsRaw));
   if (!listings.length) return <div>No listings found</div>;
@@ -28,24 +29,7 @@ const AllListing = async () => {
             <p className="text-lg text-gray-200 max-w-2xl">
               Discover apartments, condos, and homes that match your lifestyle.
             </p>
-
-            <div className="bg-neutral-100 rounded-xl p-4 grid grid-cols-10 gap-3 min-w-4xl mx-auto">
-              <div className="col-span-3 grid gap-2">
-                <Label className=" text-black">Where</Label>
-                <DropdownMenuWhere />
-              </div>
-              <div className="col-span-3 grid gap-2">
-                <Label className=" text-black">When</Label>
-                <DropdownMenuWhere />
-              </div>
-              <div className="col-span-3 grid gap-2">
-                <Label className=" text-black">Who</Label>
-                <DropdownMenuWhere />
-              </div>
-              <button className="bg-black text-white px-6 py-2 rounded-lg">
-                Search
-              </button>
-            </div>
+            <Search />
           </div>
         </div>
       </div>
