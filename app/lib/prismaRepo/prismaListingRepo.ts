@@ -1,16 +1,16 @@
-import prisma from "./db";
-import { ListingRepo } from "./interfaces/ListingRepo";
+import prisma from "../db";
+import { ListingRepo } from "../interfaces/AllRepo";
 
 export const prismaListingRepo: ListingRepo = {
   getAllListings: async () => {
     return await prisma.listing.findMany();
   },
-  getFirstFive: async () => {
+  getFirstFiveListing: async () => {
     return await prisma.listing.findMany({
       take: 5,
     });
   },
-  getFirstTen: async () => {
+  getFirstTenListing: async () => {
     return await prisma.listing.findMany({
       take: 10,
     });

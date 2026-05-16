@@ -1,7 +1,7 @@
-import { prismaListingRepo } from "./prismaListingRepo";
+import { prismaListingRepo } from "./prismaRepo/prismaListingRepo";
 
 const repo = prismaListingRepo;
 
 export const getAllListings = repo.getAllListings;
-export const getFirstFive = repo.getFirstFive;
-export const getFirstTen = repo.getFirstTen;
+export const getFirstFiveListing = repo.getFirstFiveListing;
+export const getFirstTenListing = repo.getFirstTenListing;
