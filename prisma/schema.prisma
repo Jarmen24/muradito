@@ -41,7 +41,7 @@ model Listing {
   listing_type        ListingType
   images     String[]
   country    String
-  city       String
+  cityId      String
   area      String
   latitude   Float
   longitude  Float
@@ -49,6 +49,7 @@ model Listing {
   createdAt   DateTime @default(now())
 
   user       User    @relation(fields: [userId], references: [id])
+  city           City        @relation(fields: [cityId], references: [id]) 
   ratings     Rating[]
   bookings    Booking[]
 }
@@ -74,4 +75,11 @@ model Booking {
 
   listing   Listing  @relation(fields: [listingId], references: [id])
   user      User     @relation(fields: [userId], references: [id])
+}
+
+model City {
+  id  String @id @default(uuid())
+  name String @unique
+  icon String 
+  listings Listing[]
 }
