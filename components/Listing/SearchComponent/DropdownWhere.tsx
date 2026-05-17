@@ -11,6 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import * as Icons from "lucide-react";
+import { useSearchStore } from "@/store/useSearchStore";
 
 type City = {
   id: string;
@@ -20,7 +21,7 @@ type City = {
 
 export function DropdownMenuWhere({ cities }: { cities: City[] }) {
   const [search, setSearch] = useState("");
-  const [selected, setSelected] = useState<City | null>(null);
+  const { city, setCity } = useSearchStore();
 
   const filtered = cities.filter((city) =>
     city.name.toLowerCase().includes(search.toLowerCase()),
@@ -34,7 +35,7 @@ export function DropdownMenuWhere({ cities }: { cities: City[] }) {
           className="w-full flex justify-between items-center rounded-lg border-0 bg-white py-6"
         >
           <span className="text-md text-slate-600">
-            {selected ? selected.name : "Where are you going?"}
+            {city ? city.name : "Where are you going?"}
           </span>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -83,7 +84,7 @@ export function DropdownMenuWhere({ cities }: { cities: City[] }) {
                 <DropdownMenuItem
                   key={city.id}
                   className="py-3 px-4 gap-2 cursor-pointer"
-                  onSelect={() => setSelected(city)}
+                  onSelect={() => setCity(city)}
                 >
                   {Icon && <Icon size={16} />}
                   {city.name}

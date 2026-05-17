@@ -11,14 +11,14 @@ import {
 import { DateRange } from "react-day-picker";
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
+import { useSearchStore } from "@/store/useSearchStore";
 
 export function DropdownMenuWhen() {
-  const [range, setRange] = useState<DateRange | undefined>();
-
-  const label = range?.from
-    ? range.to
-      ? `${format(range.from, "MMM d")} - ${format(range.to, "MMM d")}`
-      : format(range.from, "MMM d")
+  const { dateRange, setDateRange } = useSearchStore();
+  const label = dateRange?.from
+    ? dateRange.to
+      ? `${format(dateRange.from, "MMM d")} - ${format(dateRange.to, "MMM d")}`
+      : format(dateRange.from, "MMM d")
     : "Check in - Check out";
 
   return (
@@ -39,8 +39,8 @@ export function DropdownMenuWhen() {
       >
         <Calendar
           mode="range"
-          selected={range}
-          onSelect={setRange}
+          selected={dateRange}
+          onSelect={setDateRange}
           numberOfMonths={1}
           className="w-full"
           disabled={{ before: new Date() }}

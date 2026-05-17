@@ -8,6 +8,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Users, Plus, Minus } from "lucide-react";
+import { useSearchStore } from "@/store/useSearchStore";
 
 // 👇 moved outside the component
 const Counter = ({
@@ -49,9 +50,7 @@ const Counter = ({
 );
 
 export function DropdownMenuWho() {
-  const [adults, setAdults] = useState(1);
-  const [children, setChildren] = useState(0);
-
+  const { adults, setAdults, children, setChildren } = useSearchStore();
   const total = adults + children;
   const label = total === 1 ? "1 guest" : `${total} guests`;
 
@@ -75,14 +74,14 @@ export function DropdownMenuWho() {
           label="Adults"
           value={adults}
           min={1}
-          onIncrease={() => setAdults((p) => p + 1)}
-          onDecrease={() => setAdults((p) => p - 1)}
+          onIncrease={() => setAdults(adults + 1)}
+          onDecrease={() => setAdults(adults - 1)}
         />
         <Counter
           label="Children"
           value={children}
-          onIncrease={() => setChildren((p) => p + 1)}
-          onDecrease={() => setChildren((p) => Math.max(0, p - 1))}
+          onIncrease={() => setChildren(children + 1)}
+          onDecrease={() => setChildren(Math.max(0, children - 1))}
         />
       </DropdownMenuContent>
     </DropdownMenu>
