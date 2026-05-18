@@ -1,8 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { Listing } from "@prisma/client";
-
 import Card from "@/components/Listing/Card";
 
 import {
@@ -12,9 +10,10 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { ListingWithCity } from "@/app/types/listing";
 
 interface Props {
-  listings: Listing[];
+  listings: ListingWithCity[];
 }
 
 const ListingCarousel = ({ listings }: Props) => {
@@ -22,12 +21,14 @@ const ListingCarousel = ({ listings }: Props) => {
     <Carousel className="w-full">
       <CarouselContent>
         {listings.map((listing) => (
-          <CarouselItem key={listing.id} className="md:basis-1/2 lg:basis-1/4">
+          <CarouselItem key={listing.id} className="md:basis-1/2 lg:basis-1/4 ">
             <Link href={`/listings/${listing.id}`}>
               <Card
                 src={listing.images[0]}
                 title={listing.name}
+                city={listing.city.name}
                 price={`$${listing.price}`}
+                area={listing.area}
               />
             </Link>
           </CarouselItem>
