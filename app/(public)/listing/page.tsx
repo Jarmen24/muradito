@@ -36,11 +36,11 @@ const AllListing = async () => {
           </div>
         </div>
       </div>
-      <div className="max-w-5xl mx-auto space-y-6">
+      <div className="w-full mx-auto space-y-6">
         <h2 className="text-lg font-semibold">Popular Rentals</h2>
         <ListingCarousel listings={listings} />
       </div>
-      <div className="max-w-5xl mx-auto space-y-6">
+      <div className="w-full mx-auto space-y-6">
         <h2 className="text-lg font-semibold">Stay in Manila</h2>
         <ListingCarousel listings={listingsManilaClean} />
       </div>

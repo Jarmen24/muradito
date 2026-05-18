@@ -21,7 +21,7 @@ const ListingCarousel = ({ listings }: Props) => {
     <Carousel className="w-full">
       <CarouselContent>
         {listings.map((listing) => (
-          <CarouselItem key={listing.id} className="md:basis-1/2 lg:basis-1/4 ">
+          <CarouselItem key={listing.id} className="md:basis-1/4 lg:basis-1/6 ">
             <Link href={`/listings/${listing.id}`}>
               <Card
                 src={listing.images[0]}
