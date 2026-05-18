@@ -1,9 +1,10 @@
-import { City, Listing } from "@prisma/client";
+import { City } from "@prisma/client";
+import { ListingWithCity } from "@/app/types/listing";
 
 export interface ListingRepo {
-  getAllListings(): Promise<Listing[]>;
-  getFirstFiveListing(): Promise<Listing[]>;
-  getFirstTenListing(): Promise<Listing[]>;
+  getAllListings(): Promise<ListingWithCity[]>;
+  getFirstFiveListing(): Promise<ListingWithCity[]>;
+  getFirstTenListing(city?: string): Promise<ListingWithCity[]>;
 }
 
 export interface CityRepo {

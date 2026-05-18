@@ -3,16 +3,23 @@ import { ListingRepo } from "../interfaces/AllRepo";
 
 export const prismaListingRepo: ListingRepo = {
   getAllListings: async () => {
-    return await prisma.listing.findMany();
+    return await prisma.listing.findMany({
+      include: { city: true },
+    });
   },
   getFirstFiveListing: async () => {
     return await prisma.listing.findMany({
       take: 5,
+      include: { city: true },
     });
   },
-  getFirstTenListing: async () => {
+  getFirstTenListing: async (city?: string) => {
     return await prisma.listing.findMany({
       take: 10,
+      where: city
+        ? { city: { name: { equals: city, mode: "insensitive" } } }
+        : undefined,
+      include: { city: true },
     });
   },
 };

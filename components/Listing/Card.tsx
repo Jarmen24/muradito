@@ -6,13 +6,17 @@ const Card = ({
   src,
   title,
   price,
+  city,
+  area,
 }: {
   src: string;
   title: string;
   price: string;
+  city: string;
+  area: string;
 }) => {
   return (
-    <div className="h-full rounded-2xl border border-gray-200 bg-white w-full">
+    <div className="h-full rounded-2xl border border-gray-200 bg-white w-full hover:border-gray-400 ease-in-out duration-200">
       <div className="w-full relative h-32">
         <Image
           src={src}
@@ -25,7 +29,12 @@ const Card = ({
         <div className="flex items-center justify-between">
           <h4 className="text-xs font-semibold">{title}</h4>
         </div>
-        <p className="text-xs text-gray-500">{price} / night</p>
+        <p className="text-xs text-gray-500">
+          {city} • {area}
+        </p>
+        <p className="text-sm text-gray-500">
+          <span className="font-bold">{price}</span> / night
+        </p>
         <span className="flex items-center">
           <StarIcon className="w-3 h-3 text-yellow-500" fill="currentColor" />
           <StarIcon className="w-3 h-3 text-yellow-500" fill="currentColor" />
