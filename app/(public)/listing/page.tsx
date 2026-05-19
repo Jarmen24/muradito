@@ -9,9 +9,14 @@ import { ListingWithCity } from "@/app/types/listing";
 const AllListing = async () => {
   const listingsRaw: ListingWithCity[] = await getFirstTenListing();
   const listingsManila: ListingWithCity[] = await getFirstTenListing("Manila");
+  const listingsPuertoPrincesa: ListingWithCity[] =
+    await getFirstTenListing("Puerto Princesa");
 
   const listings = JSON.parse(JSON.stringify(listingsRaw));
   const listingsManilaClean = JSON.parse(JSON.stringify(listingsManila));
+  const listingsPuertoClean = JSON.parse(
+    JSON.stringify(listingsPuertoPrincesa),
+  );
 
   if (!listings.length) return <div>No listings found</div>;
   return (
@@ -36,13 +41,19 @@ const AllListing = async () => {
           </div>
         </div>
       </div>
-      <div className="w-full mx-auto space-y-6">
-        <h2 className="text-lg font-semibold">Popular Rentals</h2>
-        <ListingCarousel listings={listings} />
-      </div>
-      <div className="w-full mx-auto space-y-6">
-        <h2 className="text-lg font-semibold">Stay in Manila</h2>
-        <ListingCarousel listings={listingsManilaClean} />
+      <div className="w-full px-15">
+        <div className="w-full mx-auto space-y-6">
+          <h2 className="text-xl font-semibold">Popular Rentals</h2>
+          <ListingCarousel listings={listings} />
+        </div>
+        <div className="w-full mx-auto space-y-6">
+          <h2 className="text-xl font-semibold">Stay in Manila</h2>
+          <ListingCarousel listings={listingsManilaClean} />
+        </div>
+        <div className="w-full mx-auto space-y-6">
+          <h2 className="text-xl font-semibold">Puerto Princesa Goodness</h2>
+          <ListingCarousel listings={listingsPuertoClean} />
+        </div>
       </div>
     </div>
   );
