@@ -5,6 +5,7 @@ export interface ListingRepo {
   getAllListings(): Promise<ListingWithCity[]>;
   getFirstFiveListing(): Promise<ListingWithCity[]>;
   getFirstTenListing(city?: string): Promise<ListingWithCity[]>;
+  getListingBySlug(slug: string): Promise<ListingWithCity | null>;
 }
 
 export interface CityRepo {
