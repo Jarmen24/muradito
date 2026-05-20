@@ -1,3 +1,4 @@
+import Footer from "@/components/Layout/Footer";
 import Header from "@/components/Layout/Header";
 
 export default async function Layout({
@@ -7,6 +8,7 @@ export default async function Layout({
     <>
       <Header />
       {children}
+      <Footer />
     </>
   );
 }
