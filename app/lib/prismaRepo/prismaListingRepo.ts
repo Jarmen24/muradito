@@ -22,4 +22,16 @@ export const prismaListingRepo: ListingRepo = {
       include: { city: true },
     });
   },
+  getListingBySlug: async (slug: string) => {
+    const decoded = decodeURIComponent(slug);
+    return await prisma.listing.findFirst({
+      where: {
+        url: {
+          contains: `agoda.com/${decoded}/`,
+          mode: "insensitive",
+        },
+      },
+      include: { city: true },
+    });
+  },
 };
