@@ -1,3 +1,5 @@
+"use client"
+
 import {
   BadgeCheckIcon,
   BellIcon,
@@ -15,12 +17,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export function DropdownMenuAvatar({
   avatarsize,
 }: {
   avatarsize: "sm" | "lg";
 }) {
+  const router = useRouter();
   return (
     <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
@@ -37,7 +42,7 @@ export function DropdownMenuAvatar({
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuGroup>
-          <DropdownMenuItem className="cursor-pointer">
+          <DropdownMenuItem className="cursor-pointer" onClick={() => router.push("/account")}>
             <BadgeCheckIcon />
             Account
           </DropdownMenuItem>
@@ -51,8 +56,8 @@ export function DropdownMenuAvatar({
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem className="cursor-pointer">
-          <LogOutIcon />
+        <DropdownMenuItem className="cursor-pointer" onClick={() => signOut({ callbackUrl: "/login" })}>
+          <LogOutIcon />  
           Sign Out
         </DropdownMenuItem>
       </DropdownMenuContent>
