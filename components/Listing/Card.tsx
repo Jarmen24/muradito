@@ -17,12 +17,14 @@ const Card = ({
 }) => {
   return (
     <div className="h-full rounded-2xl border border-gray-200 bg-white w-full hover:border-gray-400 ease-in-out duration-200">
-      <div className="w-full relative h-32">
+      <div className="relative h-32 min-h-32 w-full shrink-0 overflow-hidden rounded-t-xl">
         <Image
           src={src}
-          className="object-cover w-full rounded-t-xl"
+          alt={title}
           fill
-          alt="logo"
+          sizes="(max-width: 768px) 50vw, 200px"
+          className="object-cover"
+          unoptimized
         />
       </div>
       <div className="py-2 px-4">
