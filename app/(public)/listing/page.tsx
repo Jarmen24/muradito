@@ -20,7 +20,7 @@ const AllListing = async () => {
 
   if (!listings.length) return <div>No listings found</div>;
   return (
-    <div className="flex flex-col min-h-screen  gap-6">
+    <div className="flex flex-col min-h-screen">
       <div className="w-full h-140 relative">
         <Image
           src="/bg-listing.jpg"
@@ -42,15 +42,15 @@ const AllListing = async () => {
         </div>
       </div>
       <div className="w-full px-15">
-        <div className="w-full mx-auto space-y-6">
+        <div className="w-full mx-auto space-y-6 mt-10">
           <h2 className="text-xl font-semibold">Popular Rentals</h2>
           <ListingCarousel listings={listings} />
         </div>
-        <div className="w-full mx-auto space-y-6">
+        <div className="w-full mx-auto space-y-6 mt-10">
           <h2 className="text-xl font-semibold">Stay in Manila</h2>
           <ListingCarousel listings={listingsManilaClean} />
         </div>
-        <div className="w-full mx-auto space-y-6">
+        <div className="w-full mx-auto space-y-6 mt-10">
           <h2 className="text-xl font-semibold">Puerto Princesa Goodness</h2>
           <ListingCarousel listings={listingsPuertoClean} />
         </div>
