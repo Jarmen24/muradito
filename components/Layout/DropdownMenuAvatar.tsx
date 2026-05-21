@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {
   BadgeCheckIcon,
@@ -22,8 +22,10 @@ import { useRouter } from "next/navigation";
 
 export function DropdownMenuAvatar({
   avatarsize,
+  avatarsrc,
 }: {
   avatarsize: "sm" | "lg";
+  avatarsrc: string | null;
 }) {
   const router = useRouter();
   return (
@@ -35,14 +37,20 @@ export function DropdownMenuAvatar({
           className="rounded-full border-2 border-transparent hover:border-white hover:bg-white/10 transition-all duration-200"
         >
           <Avatar size={avatarsize}>
-            <AvatarImage src="https://github.com/shadcn.png" alt="shadcn" />
+            <AvatarImage
+              src={avatarsrc ? avatarsrc : "https://github.com/shadcn.png"}
+              alt="shadcn"
+            />
             <AvatarFallback>LR</AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuGroup>
-          <DropdownMenuItem className="cursor-pointer" onClick={() => router.push("/account")}>
+          <DropdownMenuItem
+            className="cursor-pointer"
+            onClick={() => router.push("/account")}
+          >
             <BadgeCheckIcon />
             Account
           </DropdownMenuItem>
@@ -56,8 +64,11 @@ export function DropdownMenuAvatar({
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem className="cursor-pointer" onClick={() => signOut({ callbackUrl: "/login" })}>
-          <LogOutIcon />  
+        <DropdownMenuItem
+          className="cursor-pointer"
+          onClick={() => signOut({ callbackUrl: "/login" })}
+        >
+          <LogOutIcon />
           Sign Out
         </DropdownMenuItem>
       </DropdownMenuContent>
