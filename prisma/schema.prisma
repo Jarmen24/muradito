@@ -18,68 +18,102 @@ enum ListingType {
 
 
 model User {
-  id         String   @id @default(uuid())
-  email      String   @unique
-  first_name String?
-  last_name  String?
-  password   String?
-  createdAt  DateTime @default(now())
+  id              String    @id @default(uuid())
+  email           String    @unique
+  firstName       String?   @map("first_name")
+  lastName        String?   @map("last_name")
+  password        String?
+  profilePicture  String?   @map("profile_picture")
+  createdAt       DateTime  @default(now()) @map("created_at")
 
   listings  Listing[]
   bookings  Booking[]
   ratings   Rating[]
+
+  @@map("users")
 }
 
 model Listing {
-  id          String   @id @default(uuid())
-  name       String
-  url        String   @unique
-  property_type String
-  description String?
-  price       Decimal @db.Decimal(10, 2)
-  price_currency String
-  listing_type        ListingType
-  images     String[]
-  country    String
-  cityId      String
-  area      String
-  latitude   Float
-  longitude  Float
-  userId     String
-  createdAt   DateTime @default(now())
+  id               String      @id @default(uuid())
+  name             String
+  url              String      @unique
+  propertyType     String      @map("property_type")
+  description      String?
+  price            Decimal     @db.Decimal(10, 2)
+  priceCurrency    String      @map("price_currency")
+  listingType      ListingType @map("listing_type")
+  images           String[]
+  country          String
+  area             String
+  latitude         Float
+  longitude        Float
+  cityId           String      @map("city_id")           // ✅ fixed from listing_id
+  listingDetailsId String?     @map("listing_details_id") // ✅ fixed missing quote, made optional
+  userId           String      @map("user_id")
+  createdAt        DateTime    @default(now()) @map("created_at")
 
-  user       User    @relation(fields: [userId], references: [id])
-  city           City        @relation(fields: [cityId], references: [id]) 
-  ratings     Rating[]
-  bookings    Booking[]
+  user           User           @relation(fields: [userId], references: [id])
+  city           City           @relation(fields: [cityId], references: [id])
+  listingDetails ListingDetails? @relation(fields: [listingDetailsId], references: [id])
+  ratings        Rating[]
+  bookings       Booking[]
+
+  @@map("listings")
+}
+
+model ListingDetails {
+  id             String  @id @default(uuid())
+  guests         Int
+  bedrooms       Int
+  beds           Int
+  baths          Int
+  airConditioned Int     @map("air_conditioned")
+  swimmingPool   Int     @map("swimming_pool")
+  gym            Int
+  parking        Int
+  golf           Int
+  spa            Int
+  wifi           Int
+  others         String?
+
+  listings Listing[]
+
+  @@map("listing_details")
 }
 
 model Rating {
   id        String   @id @default(uuid())
-  listingId String
-  userId    String
+  listingId String   @map("listing_id")
+  userId    String   @map("user_id")
   rating    Int
   comment   String?
-  createdAt DateTime @default(now())
+  createdAt DateTime @default(now()) @map("created_at")
 
-  listing   Listing  @relation(fields: [listingId], references: [id])
-  user      User     @relation(fields: [userId], references: [id])
+  listing Listing @relation(fields: [listingId], references: [id])
+  user    User    @relation(fields: [userId], references: [id])
+
+  @@map("ratings")
 }
+
 model Booking {
   id        String   @id @default(uuid())
-  listingId String
-  userId    String
-  startDate DateTime
-  endDate   DateTime
-  createdAt DateTime @default(now())
+  listingId String   @map("listing_id")
+  userId    String   @map("user_id")
+  startDate DateTime @map("start_date")
+  endDate   DateTime @map("end_date")
+  createdAt DateTime @default(now()) @map("created_at")
 
-  listing   Listing  @relation(fields: [listingId], references: [id])
-  user      User     @relation(fields: [userId], references: [id])
+  listing Listing @relation(fields: [listingId], references: [id])
+  user    User    @relation(fields: [userId], references: [id])
+
+  @@map("bookings")
 }
 
 model City {
-  id  String @id @default(uuid())
-  name String @unique
-  icon String 
+  id       String    @id @default(uuid())
+  name     String    @unique
+  icon     String
   listings Listing[]
+
+  @@map("cities")
 }

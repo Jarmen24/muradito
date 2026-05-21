@@ -197,7 +197,14 @@ const data = JSON.parse(
 );
 console.log("Data loaded:", data.length, "items");
 
+const profile_pictures = [
+  "../public/profile/4.png",
+  "../public/profile/5.png",
+  "../public/profile/6.png",
+];
+
 async function main() {
+  const randompic = profile_pictures[Math.floor(Math.random() * 3)];
   // create dummy user (owner)
   const hashedPassword = await bcrypt.hash("hashedpassword", 10);
   const user = await prisma.user.upsert({
@@ -208,6 +215,9 @@ async function main() {
     create: {
       email: "seed@test.com",
       password: hashedPassword,
+      firstName: "Jarmen",
+      lastName: "Cachero",
+      profilePicture: randompic,
     },
   });
 
@@ -230,6 +240,7 @@ async function main() {
     if (!item.pricePerRoomPerNight) continue;
     const randomCity =
       seededCities[Math.floor(Math.random() * seededCities.length)];
+
     try {
       const listing = await prisma.listing.upsert({
         where: { url: item.url },
@@ -239,9 +250,9 @@ async function main() {
           url: item.url,
           description: `Stay at ${item.name} located in ${item.address.city}`,
           price: item.pricePerBook || 0,
-          price_currency: item.priceCurrency || "USD",
-          listing_type: ListingType.RENT,
-          property_type: item.propertyType,
+          priceCurrency: item.priceCurrency || "USD",
+          listingType: ListingType.RENT,
+          propertyType: item.propertyType,
           country: item.address.country,
           cityId: randomCity.id,
           area: item.address.area,
@@ -252,13 +263,45 @@ async function main() {
         },
       });
 
-      // optional: add rating
+      // ✅ Random details to simulate variety
+      const detailsData = {
+        guests: Math.floor(Math.random() * 6) + 1, // 1–6
+        bedrooms: Math.floor(Math.random() * 4) + 1, // 1–4
+        beds: Math.floor(Math.random() * 5) + 1, // 1–5
+        baths: Math.floor(Math.random() * 3) + 1, // 1–3
+        airConditioned: Math.round(Math.random()),
+        swimmingPool: Math.round(Math.random()),
+        gym: Math.round(Math.random()),
+        parking: Math.round(Math.random()),
+        golf: Math.round(Math.random()),
+        spa: Math.round(Math.random()),
+        wifi: Math.round(Math.random()),
+        others: "",
+      };
+
+      // 👇 Find existing matching row, or create a new one
+      let details = await prisma.listingDetails.findFirst({
+        where: detailsData,
+      });
+
+      if (!details) {
+        details = await prisma.listingDetails.create({
+          data: detailsData,
+        });
+      }
+
+      // 👇 Attach details to listing
+      await prisma.listing.update({
+        where: { id: listing.id },
+        data: { listingDetailsId: details.id },
+      });
+
       if (item.reviewScore) {
         await prisma.rating.create({
           data: {
             listingId: listing.id,
             userId: user.id,
-            rating: Math.round(item.reviewScore / 2), // normalize to 1-5
+            rating: Math.round(item.reviewScore / 2),
             comment: `${item.reviewCount} reviews`,
           },
         });

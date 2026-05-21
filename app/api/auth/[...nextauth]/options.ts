@@ -8,6 +8,7 @@ type AuthUser = {
   email?: string | null;
   first_name?: string | null;
   last_name?: string | null;
+  profile_picture: string | null;
 };
 
 export const options: NextAuthOptions = {
@@ -44,8 +45,9 @@ export const options: NextAuthOptions = {
         return {
           id: user.id,
           email: user.email,
-          first_name: user.first_name,
-          last_name: user.last_name,
+          first_name: user.firstName,
+          last_name: user.lastName,
+          profile_picture: user.profilePicture,
         };
       },
     }),
@@ -58,6 +60,7 @@ export const options: NextAuthOptions = {
         token.email = authUser.email;
         token.first_name = authUser.first_name;
         token.last_name = authUser.last_name;
+        token.profile_picture = authUser.profile_picture;
       }
       return token;
     },
@@ -65,8 +68,13 @@ export const options: NextAuthOptions = {
       if (token) {
         (session.user as AuthUser).id = token.id as string;
         (session.user as AuthUser).email = token.email as string | null;
-        (session.user as AuthUser).first_name = token.first_name as string | null;
+        (session.user as AuthUser).first_name = token.first_name as
+          | string
+          | null;
         (session.user as AuthUser).last_name = token.last_name as string | null;
+        (session.user as AuthUser).profile_picture = token.profile_picture as
+          | string
+          | null;
       }
       return session;
     },

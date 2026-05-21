@@ -31,7 +31,7 @@ export const prismaListingRepo: ListingRepo = {
           mode: "insensitive",
         },
       },
-      include: { city: true },
+      include: { city: true, listingDetails: true },
     });
   },
 };
