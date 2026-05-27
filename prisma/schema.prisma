@@ -39,7 +39,7 @@ model Listing {
   url              String      @unique
   propertyType     String      @map("property_type")
   description      String?
-  price            Decimal     @db.Decimal(10, 2)
+  price            Float     
   priceCurrency    String      @map("price_currency")
   listingType      ListingType @map("listing_type")
   images           String[]
