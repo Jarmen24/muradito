@@ -3,12 +3,19 @@ import {
   ListingWithCity,
   ListingWithCityWithDetails,
 } from "@/app/types/listing";
+import { DateRange } from "react-day-picker";
 
 export interface ListingRepo {
   getAllListings(): Promise<ListingWithCity[]>;
   getFirstFiveListing(): Promise<ListingWithCity[]>;
   getFirstTenListing(city?: string): Promise<ListingWithCity[]>;
   getListingBySlug(slug: string): Promise<ListingWithCityWithDetails | null>;
+  getSearchListing(
+    city: string,
+    dateRange: DateRange,
+    adults: number,
+    children: number,
+  ): Promise<ListingWithCityWithDetails[] | null>;
 }
 
 export interface CityRepo {

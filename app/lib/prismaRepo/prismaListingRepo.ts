@@ -1,5 +1,7 @@
+import { DateRange } from "react-day-picker";
 import prisma from "../db";
 import { ListingRepo } from "../interfaces/AllRepo";
+import { City } from "@prisma/client";
 
 export const prismaListingRepo: ListingRepo = {
   getAllListings: async () => {
@@ -32,6 +34,31 @@ export const prismaListingRepo: ListingRepo = {
         },
       },
       include: { city: true, listingDetails: true },
+    });
+  },
+
+  getSearchListing: async (
+    city: string,
+    dateRange: DateRange,
+    adults: number,
+    children: number,
+  ) => {
+    const totalGuests = adults + children; // ← combine since you only have `guests`
+
+    return await prisma.listing.findMany({
+      where: {
+        city: {
+          name: { contains: city, mode: "insensitive" },
+        },
+
+        listingDetails: {
+          guests: { gte: totalGuests }, // ← use `guests` not maxAdults/maxChildren
+        },
+      },
+      include: {
+        city: true,
+        listingDetails: true,
+      },
     });
   },
 };
