@@ -17,16 +17,9 @@ import {
 
 import { getListingBySlug } from "@/app/lib/listing";
 import ListingImageGallery from "@/components/Listing/ListingImageGallery";
-import { Badge } from "@/components/ui/badge";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import PriceBreakdown from "@/components/Listing/PriceBreakdown";
 
 function formatPrice(amount: unknown, currency: string) {
   const value = typeof amount === "number" ? amount : Number(amount);
@@ -43,7 +36,7 @@ export default async function ListingDetailPage({
 }) {
   const { slug } = await params;
   const listing = await getListingBySlug(slug);
-
+  console.log(listing);
   if (!listing) {
     notFound();
   }
@@ -193,42 +186,7 @@ export default async function ListingDetailPage({
             </>
           )}
         </div>
-
-        <Card className="h-fit lg:sticky lg:top-24">
-          <CardHeader className="space-y-3">
-            <div className="flex flex-wrap gap-2">
-              <Badge variant="secondary">{listing.propertyType}</Badge>
-              <Badge variant="outline">{listing.listingType}</Badge>
-            </div>
-            <CardTitle className="text-lg">Book your stay</CardTitle>
-            <CardDescription>Best price · free cancellation</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            <div>
-              <p className="text-3xl font-semibold">{price}</p>
-              <p className="text-sm text-muted-foreground">per night</p>
-            </div>
-
-            <div className="flex items-center gap-1">
-              {Array.from({ length: 5 }).map((_, i) => (
-                <StarIcon
-                  key={i}
-                  className="size-4 text-yellow-500"
-                  fill={i < 4 ? "currentColor" : "none"}
-                />
-              ))}
-              <span className="ml-2 text-sm text-muted-foreground">
-                Guest favorite
-              </span>
-            </div>
-
-            <Separator />
-
-            <Button className="w-full rounded-4xl" size="lg">
-              Book now
-            </Button>
-          </CardContent>
-        </Card>
+        <PriceBreakdown listing={listing} price={price} />
       </div>
     </div>
   );
