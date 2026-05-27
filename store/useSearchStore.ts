@@ -1,11 +1,6 @@
 import { create } from "zustand";
 import { DateRange } from "react-day-picker";
-
-type City = {
-  id: string;
-  name: string;
-  icon: string;
-};
+import { City } from "@prisma/client";
 
 type SearchStore = {
   city: City | null;
