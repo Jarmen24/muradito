@@ -1,7 +1,6 @@
 import { DateRange } from "react-day-picker";
 import prisma from "../db";
 import { ListingRepo } from "../interfaces/AllRepo";
-import { City } from "@prisma/client";
 
 export const prismaListingRepo: ListingRepo = {
   getAllListings: async () => {
