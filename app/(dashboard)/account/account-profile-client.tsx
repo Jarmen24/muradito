@@ -27,47 +27,37 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Field, FieldGroup } from "@/components/ui/field";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { User } from "@prisma/client";
 
-export type AccountUserDTO = {
-  id: string;
-  email: string;
-  first_name: string | null;
-  last_name: string | null;
-  createdAtISO: string;
-  hasPassword: boolean;
-  counts: {
-    listings: number;
-    bookings: number;
-    ratings: number;
-  };
-};
+function formatDate(dateInput: Date | string | undefined | null) {
+  if (!dateInput || dateInput === "undefined") return "—";
 
-function formatDate(iso: string) {
+  const date = new Date(dateInput);
+
+  // Fallback if the date turns out to be invalid
+  if (isNaN(date.getTime())) {
+    return "—";
+  }
+
   return new Intl.DateTimeFormat("en-US", {
     year: "numeric",
     month: "long",
     day: "numeric",
-  }).format(new Date(iso));
+  }).format(date);
 }
 
-function getInitials(user: AccountUserDTO) {
-  const { first_name, last_name, email } = user;
-  if (first_name && last_name) {
-    return `${first_name[0]}${last_name[0]}`.toUpperCase();
+function getInitials(user: User) {
+  const { firstName, lastName, email } = user;
+  if (firstName && lastName) {
+    return `${firstName[0]}${lastName[0]}`.toUpperCase();
   }
-  if (first_name) {
-    return first_name.slice(0, 2).toUpperCase();
+  if (firstName) {
+    return firstName.slice(0, 2).toUpperCase();
   }
   return email.slice(0, 2).toUpperCase();
 }
 
-function StatBox({
-  label,
-  value,
-}: {
-  label: string;
-  value: number;
-}) {
+function StatBox({ label, value }: { label: string; value: number }) {
   return (
     <div className="rounded-2xl bg-muted/50 px-4 py-4 ring-1 ring-foreground/5">
       <p className="text-2xl font-semibold tabular-nums">{value}</p>
@@ -100,22 +90,14 @@ function InfoRow({
   );
 }
 
-export default function AccountProfileClient({
-  user,
-  updateAccount,
-}: {
-  user: AccountUserDTO;
-  updateAccount: (
-    formData: FormData,
-  ) => Promise<{ success: boolean; message?: string }>;
-}) {
+export default function AccountProfileClient({ user }: { user: User }) {
   const router = useRouter();
   const [editing, setEditing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
 
   const fullName =
-    [user.first_name, user.last_name].filter(Boolean).join(" ") || "—";
+    [user.firstName, user.lastName].filter(Boolean).join(" ") || "—";
   const initials = getInitials(user);
 
   function handleCancel() {
@@ -123,23 +105,23 @@ export default function AccountProfileClient({
     setEditing(false);
   }
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    setError(null);
-    setPending(true);
-    try {
-      const form = e.currentTarget;
-      const result = await updateAccount(new FormData(form));
-      if (!result.success) {
-        setError(result.message ?? "Something went wrong");
-        return;
-      }
-      setEditing(false);
-      router.refresh();
-    } finally {
-      setPending(false);
-    }
-  }
+  // async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  //   e.preventDefault();
+  //   setError(null);
+  //   setPending(true);
+  //   try {
+  //     const form = e.currentTarget;
+  //     const result = await updateAccount(new FormData(form));
+  //     if (!result.success) {
+  //       setError(result.message ?? "Something went wrong");
+  //       return;
+  //     }
+  //     setEditing(false);
+  //     router.refresh();
+  //   } finally {
+  //     setPending(false);
+  //   }
+  // }
 
   return (
     <div className="mx-auto w-full max-w-3xl space-y-6">
@@ -192,23 +174,31 @@ export default function AccountProfileClient({
             <div className="grid gap-3 sm:grid-cols-2">
               <InfoRow icon={HashIcon} label="User ID" value={user.id} />
               <InfoRow icon={MailIcon} label="Email" value={user.email} />
-              <InfoRow icon={UserIcon} label="First name" value={user.first_name ?? "—"} />
-              <InfoRow icon={UserIcon} label="Last name" value={user.last_name ?? "—"} />
+              <InfoRow
+                icon={UserIcon}
+                label="First name"
+                value={user.firstName ?? "—"}
+              />
+              <InfoRow
+                icon={UserIcon}
+                label="Last name"
+                value={user.lastName ?? "—"}
+              />
               <InfoRow
                 icon={CalendarIcon}
                 label="Member since"
-                value={formatDate(user.createdAtISO)}
+                value={formatDate(user.createdAt)}
               />
-              <InfoRow
+              {/* <InfoRow
                 icon={LockIcon}
                 label="Password"
                 value={user.hasPassword ? "Set (hidden)" : "Not set"}
-              />
+              /> */}
             </div>
           ) : (
             <form
               id="account-edit-form"
-              onSubmit={handleSubmit}
+              // onSubmit={handleSubmit}
               className="space-y-6"
             >
               <FieldGroup className="gap-6">
@@ -217,7 +207,7 @@ export default function AccountProfileClient({
                   <Input
                     id="first_name"
                     name="first_name"
-                    defaultValue={user.first_name ?? ""}
+                    defaultValue={user.firstName ?? ""}
                     placeholder="Your first name"
                     required
                     autoComplete="given-name"
@@ -228,7 +218,7 @@ export default function AccountProfileClient({
                   <Input
                     id="last_name"
                     name="last_name"
-                    defaultValue={user.last_name ?? ""}
+                    defaultValue={user.lastName ?? ""}
                     placeholder="Optional"
                     autoComplete="family-name"
                   />
@@ -271,9 +261,9 @@ export default function AccountProfileClient({
       <div className="space-y-3">
         <h2 className="text-xl font-semibold">Your activity</h2>
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-          <StatBox label="Listings" value={user.counts.listings} />
+          {/* <StatBox label="Listings" value={user.counts.listings} />
           <StatBox label="Bookings" value={user.counts.bookings} />
-          <StatBox label="Ratings" value={user.counts.ratings} />
+          <StatBox label="Ratings" value={user.counts.ratings} /> */}
         </div>
       </div>
     </div>
