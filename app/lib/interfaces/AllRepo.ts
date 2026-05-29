@@ -1,4 +1,4 @@
-import { City } from "@prisma/client";
+import { City, User } from "@prisma/client";
 import {
   ListingWithCity,
   ListingWithCityWithDetails,
@@ -20,4 +20,8 @@ export interface ListingRepo {
 
 export interface CityRepo {
   getAllCities(): Promise<City[]>;
+}
+
+export interface UserRepo {
+  getUser(email?: string): Promise<User | null>;
 }
