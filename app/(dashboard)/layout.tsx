@@ -7,7 +7,6 @@ export default async function Layout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   const session = await getServerSession(options);
-  console.log(session);
   return (
     <>
       <Header />
