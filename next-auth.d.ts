@@ -4,25 +4,25 @@ declare module "next-auth" {
   interface Session {
     user: {
       id: string;
-      first_name?: string | null;
-      last_name?: string | null;
-      profile_picture?: string | null;
+      firstName?: string | null;
+      lastName?: string | null;
+      profilePicture?: string | null;
     } & DefaultSession["user"];
   }
 
   interface User {
     id: string;
-    first_name?: string | null;
-    last_name?: string | null;
-    profile_picture?: string | null;
+    firstName?: string | null;
+    lastName?: string | null;
+    profilePicture?: string | null;
   }
 }
 
 declare module "next-auth/jwt" {
   interface JWT {
     id?: string;
-    first_name?: string | null;
-    last_name?: string | null;
-    profile_picture?: string | null;
+    firstName?: string | null;
+    lastName?: string | null;
+    profilePicture?: string | null;
   }
 }

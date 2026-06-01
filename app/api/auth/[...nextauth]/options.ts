@@ -3,12 +3,13 @@ import bcrypt from "bcrypt";
 import CredentialsProvider from "next-auth/providers/credentials";
 import prisma from "@/app/lib/db";
 
+// Fix AuthUser to match what authorize() actually returns (camelCase)
 type AuthUser = {
   id: string;
   email?: string | null;
-  first_name?: string | null;
-  last_name?: string | null;
-  profile_picture: string | null;
+  firstName?: string | null;
+  lastName?: string | null;
+  profilePicture?: string | null;
 };
 
 export const options: NextAuthOptions = {
@@ -21,15 +22,11 @@ export const options: NextAuthOptions = {
           type: "text",
           placeholder: "example@gmail.com",
         },
-        password: {
-          label: "Password",
-          type: "password",
-        },
+        password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        if (!credentials) {
-          throw new Error("Invalid Credentials");
-        }
+        if (!credentials) throw new Error("Invalid Credentials");
+
         const user = await prisma.user.findUnique({
           where: { email: credentials.email },
         });
@@ -45,9 +42,9 @@ export const options: NextAuthOptions = {
         return {
           id: user.id,
           email: user.email,
-          first_name: user.firstName,
-          last_name: user.lastName,
-          profile_picture: user.profilePicture,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          profilePicture: user.profilePicture,
         };
       },
     }),
@@ -58,24 +55,19 @@ export const options: NextAuthOptions = {
         const authUser = user as AuthUser;
         token.id = authUser.id;
         token.email = authUser.email;
-        token.first_name = authUser.first_name;
-        token.last_name = authUser.last_name;
-        token.profile_picture = authUser.profile_picture;
+        token.firstName = authUser.firstName; // fixed: was authUser.first_name
+        token.lastName = authUser.lastName; // fixed: was authUser.last_name
+        token.profilePicture = authUser.profilePicture; // fixed: was authUser.profile_picture
       }
       return token;
     },
     async session({ session, token }) {
-      if (token) {
-        (session.user as AuthUser).id = token.id as string;
-        (session.user as AuthUser).email = token.email as string | null;
-        (session.user as AuthUser).first_name = token.first_name as
-          | string
-          | null;
-        (session.user as AuthUser).last_name = token.last_name as string | null;
-        (session.user as AuthUser).profile_picture = token.profile_picture as
-          | string
-          | null;
-      }
+      // Fix: actually assign token values TO the session object
+      session.user.id = token.id as string;
+      session.user.email = token.email as string;
+      session.user.firstName = token.firstName as string | null;
+      session.user.lastName = token.lastName as string | null;
+      session.user.profilePicture = token.profilePicture as string | null;
       return session;
     },
   },
