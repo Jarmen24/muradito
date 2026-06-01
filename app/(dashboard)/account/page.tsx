@@ -1,21 +1,21 @@
 import Image from "next/image";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
-import { revalidatePath } from "next/cache";
-
 import { options } from "@/app/api/auth/[...nextauth]/options";
-import prisma from "@/app/lib/db";
 import AccountProfileClient from "./account-profile-client";
+import { getUser } from "@/app/lib/user";
 import { User } from "@prisma/client";
 
 export async function updateAccount(formData: FormData) {}
 
 export default async function AccountPage() {
   const session = await getServerSession(options);
+
   if (!session) {
     redirect("/login");
   }
-  const user = await session?.user;
+
+  const user = await getUser(session.user.email!);
 
   return (
     <div className="flex min-h-screen flex-col gap-6">
