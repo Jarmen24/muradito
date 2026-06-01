@@ -28,6 +28,7 @@ import { Separator } from "@/components/ui/separator";
 import { Field, FieldGroup } from "@/components/ui/field";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { User } from "@prisma/client";
+import Image from "next/image";
 
 function formatDate(dateInput: Date | string | undefined | null) {
   if (!dateInput || dateInput === "undefined") return "—";
@@ -91,7 +92,6 @@ function InfoRow({
 }
 
 export default function AccountProfileClient({ user }: { user: User }) {
-  const router = useRouter();
   const [editing, setEditing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
@@ -127,9 +127,17 @@ export default function AccountProfileClient({ user }: { user: User }) {
     <div className="mx-auto w-full max-w-3xl space-y-6">
       <Card className="overflow-hidden">
         <CardHeader className="flex flex-row flex-wrap items-start gap-4 sm:items-center">
-          <div className="flex size-16 shrink-0 items-center justify-center rounded-2xl bg-primary text-lg font-semibold text-primary-foreground">
-            {initials}
-          </div>
+          <Image
+            src={
+              user.profilePicture
+                ? user.profilePicture
+                : "https://placehold.co/400x400"
+            }
+            alt={`Profile Picture of ${user.firstName} ${user.lastName}`}
+            className="rounded-lg size-16"
+            width={190}
+            height={190}
+          />
           <div className="min-w-0 flex-1 space-y-1">
             <CardTitle className="text-xl sm:text-2xl">{fullName}</CardTitle>
             <CardDescription className="truncate text-base">
@@ -172,8 +180,6 @@ export default function AccountProfileClient({ user }: { user: User }) {
 
           {!editing ? (
             <div className="grid gap-3 sm:grid-cols-2">
-              <InfoRow icon={HashIcon} label="User ID" value={user.id} />
-              <InfoRow icon={MailIcon} label="Email" value={user.email} />
               <InfoRow
                 icon={UserIcon}
                 label="First name"
@@ -184,16 +190,12 @@ export default function AccountProfileClient({ user }: { user: User }) {
                 label="Last name"
                 value={user.lastName ?? "—"}
               />
+              <InfoRow icon={MailIcon} label="Email" value={user.email} />
               <InfoRow
                 icon={CalendarIcon}
                 label="Member since"
                 value={formatDate(user.createdAt)}
               />
-              {/* <InfoRow
-                icon={LockIcon}
-                label="Password"
-                value={user.hasPassword ? "Set (hidden)" : "Not set"}
-              /> */}
             </div>
           ) : (
             <form
@@ -219,6 +221,16 @@ export default function AccountProfileClient({ user }: { user: User }) {
                     id="last_name"
                     name="last_name"
                     defaultValue={user.lastName ?? ""}
+                    placeholder="Optional"
+                    autoComplete="family-name"
+                  />
+                </Field>
+                <Field>
+                  <Label htmlFor="last_name">Email</Label>
+                  <Input
+                    id="last_name"
+                    name="last_name"
+                    defaultValue={user.email ?? ""}
                     placeholder="Optional"
                     autoComplete="family-name"
                   />
