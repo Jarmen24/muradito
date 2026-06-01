@@ -1,13 +1,10 @@
-import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { Button } from "../ui/button";
 import { getServerSession } from "next-auth";
 import options from "@/app/api/auth/[...nextauth]/options";
-import LogoutButton from "./LogoutButton";
 import { DropdownMenuAvatar } from "./DropdownMenuAvatar";
 import HeaderWrapper from "./HeaderWrapper";
-import { useHeaderStore } from "@/store/useHeaderStore";
 import ImageContainer from "./ImageContainer";
 
 const Header = async () => {
@@ -41,7 +38,7 @@ const Header = async () => {
         {session?.user ? (
           <DropdownMenuAvatar
             avatarsize="lg"
-            avatarsrc={session.user.profile_picture!}
+            avatarsrc={session.user.profilePicture!}
           />
         ) : (
           <Button asChild>
