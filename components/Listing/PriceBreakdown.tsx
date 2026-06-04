@@ -12,6 +12,9 @@ import { ListingWithCityWithDetails } from "@/app/types/listing";
 import { StarIcon } from "lucide-react";
 import { Separator } from "../ui/separator";
 import { Button } from "../ui/button";
+import { DropdownMenuWhen } from "./SearchComponent/DropdownWhen";
+import { Label } from "../ui/label";
+import { DropdownMenuWho } from "./SearchComponent/DropdownWho";
 const PriceBreakdown = ({
   listing,
   price,
@@ -49,6 +52,11 @@ const PriceBreakdown = ({
         </div>
 
         <Separator />
+        <Label className="mb-2">Check in - Check out</Label>
+        <DropdownMenuWhen className="border-1 border-gray-200" />
+        <Label className="mb-2">Guests</Label>
+
+        <DropdownMenuWho className="border-1 border-gray-200" />
 
         <Button className="w-full rounded-4xl" size="lg">
           Book now
