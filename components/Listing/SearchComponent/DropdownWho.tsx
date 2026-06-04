@@ -49,7 +49,7 @@ const Counter = ({
   </div>
 );
 
-export function DropdownMenuWho() {
+export function DropdownMenuWho({ className }: { className?: string }) {
   const { adults, setAdults, children, setChildren } = useSearchStore();
   const total = adults + children;
   const label = total === 1 ? "1 guest" : `${total} guests`;
@@ -59,7 +59,7 @@ export function DropdownMenuWho() {
       <DropdownMenuTrigger asChild>
         <Button
           variant="outline"
-          className="w-full flex justify-between items-center rounded-lg border-0 bg-white py-6"
+          className={`w-full flex justify-between items-center rounded-lg border-0 bg-white py-6 ${className} `}
         >
           <span className="text-md text-slate-600">{label}</span>
           <Users size={18} stroke="#c7c7c7" />

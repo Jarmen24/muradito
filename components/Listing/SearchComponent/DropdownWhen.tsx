@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -8,17 +7,16 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { DateRange } from "react-day-picker";
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { useSearchStore } from "@/store/useSearchStore";
 
-export function DropdownMenuWhen() {
+export function DropdownMenuWhen({ className }: { className?: string }) {
   const { dateRange, setDateRange } = useSearchStore();
   const label = dateRange?.from
     ? dateRange.to
-      ? `${format(dateRange.from, "MMM d")} - ${format(dateRange.to, "MMM d")}`
-      : format(dateRange.from, "MMM d")
+      ? `${format(dateRange.from, "MM/dd/yy")} - ${format(dateRange.to, "MM/dd/yy")}`
+      : format(dateRange.from, "MM/dd/yy")
     : "Check in - Check out";
 
   return (
@@ -26,7 +24,7 @@ export function DropdownMenuWhen() {
       <DropdownMenuTrigger asChild>
         <Button
           variant="outline"
-          className="w-full flex justify-between items-center rounded-lg border-0 bg-white py-6"
+          className={`w-full flex justify-between items-center rounded-lg border-0 bg-white py-6 ${className}`}
         >
           <span className="text-md text-slate-600">{label}</span>
           <CalendarIcon size={18} stroke="#c7c7c7" />
