@@ -65,7 +65,7 @@ export default async function SimpleTable() {
                   >
                     <td className="p-4 text-sm">{row.id}</td>
                     <td className="p-4 text-sm">
-                      {row.first_name} {row.last_name}
+                      {row.firstName} {row.lastName}
                     </td>
                     <td className="p-4 text-sm">{row.email}</td>
                   </tr>
