@@ -25,9 +25,12 @@ const Header = async () => {
         <Link href="/listing" className={navItem}>
           Listings
         </Link>
-        <Link href="/" className={navItem}>
-          Real Estate
+        <Link href="/listing" className={navItem}>
+          Account
         </Link>
+        {/* <Link href="/" className={navItem}>
+          Real Estate
+        </Link> */}
         <Link href="/" className={navItem}>
           Articles
         </Link>
