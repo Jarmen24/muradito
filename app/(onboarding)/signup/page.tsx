@@ -13,7 +13,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import "@/app/globals.css";
-import { register } from "@/app/actions/register";
+import { register } from "@/app/actions/user.actions";
 import { Field, FieldGroup } from "@/components/ui/field";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";

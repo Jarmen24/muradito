@@ -29,6 +29,9 @@ import { Field, FieldGroup } from "@/components/ui/field";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { User } from "@prisma/client";
 import Image from "next/image";
+import { updateAccount } from "@/app/actions/user.actions";
+import options from "@/app/api/auth/[...nextauth]/options";
+import { getServerSession } from "next-auth";
 
 function formatDate(dateInput: Date | string | undefined | null) {
   if (!dateInput || dateInput === "undefined") return "—";
@@ -105,23 +108,22 @@ export default function AccountProfileClient({ user }: { user: User }) {
     setEditing(false);
   }
 
-  // async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-  //   e.preventDefault();
-  //   setError(null);
-  //   setPending(true);
-  //   try {
-  //     const form = e.currentTarget;
-  //     const result = await updateAccount(new FormData(form));
-  //     if (!result.success) {
-  //       setError(result.message ?? "Something went wrong");
-  //       return;
-  //     }
-  //     setEditing(false);
-  //     router.refresh();
-  //   } finally {
-  //     setPending(false);
-  //   }
-  // }
+  async function handleUpdate(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setError(null);
+    setPending(true);
+    try {
+      const form = e.currentTarget;
+      const result = await updateAccount(new FormData(form));
+      if (!result.success) {
+        setError(result.message ?? "Something went wrong");
+        return;
+      }
+      setEditing(false);
+    } finally {
+      setPending(false);
+    }
+  }
 
   return (
     <div className="mx-auto w-full max-w-3xl space-y-6">
@@ -200,7 +202,7 @@ export default function AccountProfileClient({ user }: { user: User }) {
           ) : (
             <form
               id="account-edit-form"
-              // onSubmit={handleSubmit}
+              onSubmit={handleUpdate}
               className="space-y-6"
             >
               <FieldGroup className="gap-6">
